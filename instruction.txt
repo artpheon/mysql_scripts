@@ -1,0 +1,6 @@
+How to create a docker maria-DB container:
+
+1) docker run --name maria -e MYSQL_ROOT_PASSWORD=pass -p 3306:3306 -d docker.io/library/mariadb:10.2
+2) Install virtualenv
+3) Install mysql: pip install mysql-connector-python
+3) Run scripts from the folder here
