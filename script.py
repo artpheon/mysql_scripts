@@ -1,36 +1,40 @@
-import mysql.connector
 from mysql.connector import Error
 from sqlalchemy import create_engine
 import pandas
+import sys
 
-def getValues(filename):
+def get_engine():
+    # rename columns in excel - yes
+    user = input('Введите имя пользователя: ')
+    password = input('Введите пароль: ')
+    host = input('Введите имя хоста: ')
+    port = input('Введите порт: ')
+    if not user or not password or not host or not port:
+        return None
+    engine = create_engine('mysql+mysqlconnector://{0}:{1}@{2}:{3}'.format(user, password, host, port))
+    return engine
+
+def get_data_frame():
+    filename = sys.argv[1]
     excel = pandas.read_excel('./'+filename, sheet_name=0)
+    if excel.empty:
+        return excel
     excel.drop(['Дата первого ответа', 'ID компании', 'Customer Name', 'Дерево сообщений', 'FirstResponseInMin', 'FirstResponseDiffInMin'], axis=1, inplace=True)
-    # rename columns in excel?
-    engine = create_engine('mysql://root:python@127.0.0.1:3306/chats')
-    excel.to_sql('tickets', engine, index=False, if_exists='append')
-    dsql = pandas.read_sql_table('tickets', engine)
-
-
+    excel.set_axis(['ticket_id', 'age', 'created_time', 'closed', 'date_first_block', 'state', 'priority', 'queue', 'to_block', 'owner', 'name', 'surname', 'sender', 'subject', 'spent_time', 'SolutionInMin', 'SolutionDiffInMin'], axis=1, inplace=True)
+    return excel
 
 try:
-    connection = mysql.connector.connect(host='localhost',
-                                         database='chats',
-                                         user='root',
-                                         password='pass')
-    if connection.is_connected():
-        db_Info = connection.get_server_info()
-        print("Connected to MySQL Server version ", db_Info)
-        cursor = connection.cursor()
-        cursor.execute('insert into chats.tickets VALUE (10101259, "1 h 52 min", "2021-09-02 06:20:24", "2021-09-02 06:37:04", "2021-09-02 06:36:58", "closed successfully", "3 normal", "BSC Support::Urgent", "unlocked", "GAR5KSN", "Regina", "Gainullina", "Robot <landing@boschcarservice.ru>", "Filled form on a site", 0, 16, 13);')
-        #record = cursor.fetchall()
-        #print("You're connected to database: ", record)
+    if len(sys.argv) != 2:
+        raise SystemExit("Имя файла должно быть аргументом к скрипту")
+    engine = get_engine()
+    df = get_data_frame()
+    if df.empty:
+        engine.dispose()
+        raise SystemExit("Некорректное имя excel файла, либо нет доступа")
+    tname = input('Введите имя базы/схемы: ')
+    ttable = input('Введите имя таблицы: ')
+    df.to_sql(name=ttable, schema=tname, con=engine, index=False, if_exists='append')
+    print('Данные из файла {} были загружены в базу данных.'.format(sys.argv[1]))
 
 except Error as e:
-    print("Error while connecting to MySQL", e)
-finally:
-    if connection.is_connected():
-        cursor.close()
-        connection.commit()
-        connection.close()
-        print("MySQL connection is closed")
+    print("Возникла ошибка:", e)
