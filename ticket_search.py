@@ -24,7 +24,7 @@ def get_data_frame():
     return excel
 
 try:
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         raise SystemExit("Имя файла должно быть аргументом к скрипту")
     engine = get_engine()
     df = get_data_frame()
