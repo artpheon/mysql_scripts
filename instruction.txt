@@ -2,5 +2,12 @@ How to create a docker maria-DB container:
 
 1) docker run --name maria -e MYSQL_ROOT_PASSWORD=pass -p 3306:3306 -d docker.io/library/mariadb:10.2
 2) Install virtualenv
-3) Install mysql: pip install mysql-connector-python
-3) Run scripts from the folder here
+3) Install everything: pip install mysql-connector-python pandas sqlalchemy openpyxl
+4) Enter docker with: sudo docker exec -it /bin/bash <container name>
+5) mysql -uroot -p
+
+Create database and table:
+CREATE DATABASE chats;
+USE chats;
+CREATE TABLE tickets(ticket_id INT NOT NULL, age VARCHAR(40) NOT NULL, created_time VARCHAR(40) NOT NULL, closed VARCHAR(40) NOT NULL, date_first_block VARCHAR(40) NOT NULL, state VARCHAR(40) NOT NULL, priority VARCHAR(40) NOT NULL, queue VARCHAR(40) NOT NULL, to_block VARCHAR(40) NOT NULL, owner VARCHAR(40) NOT NULL, name VARCHAR(40) NOT NULL, surname VARCHAR(40) NOT NULL, sender VARCHAR(40) NOT NULL, subject VARCHAR(40) NOT NULL, spent_time INT NOT NULL, SolutionInMin INT NOT NULL, SolutionDiffInMin INT NOT NULL, PRIMARY KEY(ticket_id));
+ticket_id, age, created_time, closed, date_first_block, state, priority, queue, to_block, owner, name, surname, sender, subject, spent_time, SolutionInMin, SolutionDiffInMin
