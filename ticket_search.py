@@ -3,14 +3,16 @@ from sqlalchemy import create_engine
 import pandas
 import sys
 
+import sqlalchemy
+
 def get_engine():
     # rename columns in excel - yes
     user = input('Введите имя пользователя: ')
     password = input('Введите пароль: ')
     host = input('Введите имя хоста: ')
     port = input('Введите порт: ')
-    if not user or not password or not host or not port:
-        return None
+    if len(user)==0 or len(password)==0 or len(host)==0 or port==0:
+        raise SystemExit('Некоторые данные не были введены')
     engine = create_engine('mysql+mysqlconnector://{0}:{1}@{2}:{3}'.format(user, password, host, port))
     return engine
 
@@ -38,3 +40,7 @@ try:
 
 except Error as e:
     print("Возникла ошибка:", e)
+except ConnectionRefusedError as e:
+    print("Не удалось подключиться к базе: ", e)
+except sqlalchemy.exc.InterfaceError as e:
+    print("Не удалось подключиться к базе: ", e)

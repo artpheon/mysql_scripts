@@ -9,6 +9,8 @@ try:
     file = pd.read_excel(sys.argv[1], sheet_name=0)
     collist = ['x' + str(x) for x in range(13)]
     file.columns = collist
-    file2 = pd.DataFrame(file.iloc[4:17])
+    start = file.loc[file['x0'] == 'Сводный отчет по сайтам'].index[0]
+    ends = file.loc[file['x0'] == 'ИТОГО'].index
+    file2 = pd.DataFrame(file.iloc[start:ends[0]+1])
 except:
     exit(1)
