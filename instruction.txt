@@ -6,11 +6,41 @@ How to create a docker maria-DB container:
 4) Enter docker with: sudo docker exec -it /bin/bash <container name>
 5) mysql -uroot -p
 
-Create database and table:
+
 CREATE DATABASE chats;
 USE chats;
 ALTER DATABASE chats CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE tickets(ticket_id INT NOT NULL, age VARCHAR(40) NOT NULL, created_time VARCHAR(40) NOT NULL, closed VARCHAR(40) NOT NULL, date_first_block VARCHAR(40) NOT NULL, state VARCHAR(40) NOT NULL, priority VARCHAR(40) NOT NULL, queue VARCHAR(40) NOT NULL, to_block VARCHAR(40) NOT NULL, owner VARCHAR(40) NOT NULL, name VARCHAR(40) NOT NULL, surname VARCHAR(40) NOT NULL, sender VARCHAR(40) NOT NULL, subject VARCHAR(40) NOT NULL, spent_time INT NOT NULL, SolutionInMin INT NOT NULL, SolutionDiffInMin INT NOT NULL, PRIMARY KEY(ticket_id));
+CREATE TABLE tickets(
+	ticket_id INT NOT NULL,
+	age TIME DEFAULT '00:00:00',
+	created DATETIME DEFAULT '0000-00-00 00:00:00',
+	closed DATETIME DEFAULT '0000-00-00 00:00:00',
+	first_block DATETIME DEFAULT '0000-00-00 00:00:00',
+	state VARCHAR(30) DEFAULT 'N/A',
+	priority VARCHAR(20) DEFAULT 'N/A',
+	queue VARCHAR(40) DEFAULT 'N/A',
+	to_block VARCHAR(40) DEFAULT 'N/A',
+	owner VARCHAR(20) DEFAULT 'N/A',
+	first_name VARCHAR(40) DEFAULT 'N/A',
+	last_name VARCHAR(40) DEFAULT 'N/A',
+	company_id VARCHAR(30) DEFAULT '0',
+	customer_name VARCHAR(40) DEFAULT 'N/A',
+	sender VARCHAR(40) DEFAULT 'N/A',
+	subject VARCHAR(40) DEFAULT 'N/A',
+	spent_time INT DEFAULT 0,
+	message_tree VARCHAR(40) DEFAULT 'N/A',
+	solution_in_min INT DEFAULT 0,
+	solution_diff_min INT DEFAULT 0,
+	first_response_in_min INT DEFAULT 0,
+	first_response_diff_min INT DEFAULT 0,
+	PRIMARY KEY(ticket_id));
 ALTER TABLE tickets CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-ticket_id, age, created_time, closed, date_first_block, state, priority, queue, to_block, owner, name, surname, sender, subject, spent_time, SolutionInMin, SolutionDiffInMin
+задача1: Экспорт таблицы tickets.
+задача2: Экспорт другой таблицы (только первая JivoChat).
+задача3: Скрипт для подсчета статистики чатов по значениям времени создания/закрытия из tickets.
+	- если разница между временем закрытия и создания <= 30 мин, то это SUCCESS
+	- иначе если создано между 19:00 и 6:00 закрыто в промежуток следующего дня 06:00 - 09:00, то это SUCCESS
+	- добавить в all
+задача4: Скрипт для подсчета итоговых значения для параметров "Принятые диалоги" и "Непринятые диалоги", исключая "VK [Мишлен]".
+задача5: Попробовать соединить 1 и 3 задачи в одну.
