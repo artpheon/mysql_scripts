@@ -1,0 +1,8 @@
+{
+    "user": "root",
+    "password": "pass",
+    "host": "localhost",
+    "port": "3306",
+    "schema": "chats",
+    "table": "tickets"
+}
