@@ -12,5 +12,4 @@ try:
     start = file.loc[file['x0'] == 'Сводный отчет по сайтам'].index[0]
     ends = file.loc[file['x0'] == 'ИТОГО'].index
     file2 = pd.DataFrame(file.iloc[start:ends[0]+1])
-except:
-    exit(1)
+except: print("Ошибка")

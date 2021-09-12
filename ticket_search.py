@@ -47,15 +47,14 @@ try:
         raise SystemExit("Некорректное имя excel файла, либо нет доступа")
     tname = data['schema']
     ttable = data['table']
-    try:
-        df.to_sql(name=ttable, schema=tname, con=engine, index=False, if_exists='append')
-    except ValueError as vx: print(vx)
-    except Exception as ex: print(ex)
-    else: print('Данные из файла {} были загружены в базу данных.'.format(sys.argv[1]))
+    df.to_sql(name=ttable, schema=tname, con=engine, index=False, if_exists='append')
+    print('Данные из файла {} были загружены в базу данных.'.format(sys.argv[1]))
 
-except Error as e:
-    print("Возникла ошибка:", e)
+except ValueError as vx: print(vx)
+except Exception as ex: print(ex)
 except ConnectionRefusedError as e:
     print("Не удалось подключиться к базе: ", e)
 except sqlalchemy.exc.InterfaceError as e:
     print("Не удалось подключиться к базе: ", e)
+except Error as e:
+    print("Возникла ошибка:", e)
