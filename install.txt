@@ -1,0 +1,11 @@
+1. Установка Python для Windows: https://www.python.org/downloads/windows/
+
+2. Обновление pip менеджера пакетов:
+    py -m pip install --upgrade pip setuptools wheel
+
+(3). Можно установить виртуальную среду для установки пакетов, активировать ее: 
+    py -m venv ./env
+    env\Scripts\activate
+
+4. Установить пакеты:
+    py -m pip install -r requirements.txt
