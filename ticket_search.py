@@ -16,7 +16,6 @@ def _prefix_insert_with_ignore(insert, compiler, **kw):
     return compiler.visit_insert(insert.prefix_with('IGNORE'), **kw)
 
 def get_engine(data):
-    # rename columns in excel - yes
     user = data['user']
     password = data['password']
     host = data['host']
@@ -43,6 +42,8 @@ def get_data_frame():
     excel = pandas.read_excel('./'+filename, sheet_name=0)
     if excel.empty:
         return excel
+    if len(excel.columns.to_list()) != 23:
+        raise ValueError("В таблице неверное количество столбцов, должно быть 23")
     excel.set_axis(['ticket_id', 'age', 'created', 'closed', 'first_block', 'first_repl', 'state', 'priority', 'queue', 'to_block', 'owner', 'first_name', 'last_name', 'company_id', 'customer_name', 'sender', 'subject', 'spent_time', 'message_tree', 'solution_in_min', 'solution_diff_min', 'first_response_in_min', 'first_response_diff_min'], axis=1, inplace=True)
     excel.iloc[:, 1] = excel.iloc[:, 1].apply(match_time)
     return excel
@@ -58,10 +59,11 @@ try:
         engine.dispose()
         raise SystemExit("Некорректное имя excel файла, либо нет доступа")
     tname = data['schema']
-    ttable = data['table']
+    ttable = data['table_tickets']
     
     df.to_sql(name=ttable, schema=tname, con=engine, index=False, if_exists='append')
     print('Данные из файла {} были загружены в базу данных.'.format(sys.argv[1]))
+    engine.dispose()
 
 except ValueError as vx: print(vx)
 except Exception as ex: print(ex)

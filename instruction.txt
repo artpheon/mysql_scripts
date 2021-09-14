@@ -37,6 +37,19 @@ CREATE TABLE tickets(
 	PRIMARY KEY(ticket_id));
 ALTER TABLE tickets CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+CREATE TABLE site_reports(
+	id INT NOT NULL AUTO_INCREMENT,
+	date DATE DEFAULT '0000-00-00',
+	site_name VARCHAR(40) DEFAULT 'N/A',
+	dial_acc INT DEFAULT 0,
+	call_acc INT DEFAULT 0,
+	dial_not_acc INT DEFAULT 0,
+	call_not_acc INT DEFAULT 0,
+	dial_noreply INT DEFAULT 0,
+	offline_msg INT DEFAULT 0,
+	PRIMARY KEY(id));
+ALTER TABLE site_reports CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 задача1: Экспорт таблицы tickets.
 задача2: Экспорт другой таблицы (только первая JivoChat).
 задача3: Скрипт для подсчета статистики чатов по значениям времени создания/закрытия из tickets.
