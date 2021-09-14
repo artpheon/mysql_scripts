@@ -47,6 +47,7 @@ try:
         raise SystemExit("Некорректное имя excel файла, либо нет доступа")
     tname = data['schema']
     ttable = data['table']
+    
     df.to_sql(name=ttable, schema=tname, con=engine, index=False, if_exists='append')
     print('Данные из файла {} были загружены в базу данных.'.format(sys.argv[1]))
 

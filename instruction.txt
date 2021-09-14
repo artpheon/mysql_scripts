@@ -12,7 +12,7 @@ USE chats;
 ALTER DATABASE chats CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 CREATE TABLE tickets(
 	ticket_id INT NOT NULL,
-	age VARCHAR(20) DEFAULT 'N/A',
+	age TIME DEFAULT '00:00:00',
 	created DATETIME DEFAULT '0000-00-00 00:00:00',
 	closed DATETIME DEFAULT '0000-00-00 00:00:00',
 	first_block DATETIME DEFAULT '0000-00-00 00:00:00',
@@ -45,3 +45,7 @@ ALTER TABLE tickets CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 	- добавить в all
 задача4: Скрипт для подсчета итоговых значения для параметров "Принятые диалоги" и "Непринятые диалоги", исключая "VK [Мишлен]".
 задача5: Попробовать соединить 1 и 3 задачи в одну.
+
+
+главное просто сохранить сырые данные
+
