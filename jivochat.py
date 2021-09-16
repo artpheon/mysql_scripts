@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from mysql.connector import Error
 from sqlalchemy import create_engine
 from sqlalchemy import insert
@@ -62,21 +61,16 @@ try:
     if len(file.columns.to_list()) != 13:
         raise ValueError("В таблице неверное количество столбцов, должно быть 13")
     file.columns = ['x' + str(x) for x in range(13)]
-    table = format_new_table(file)
-    engine = get_engine(data)
     
+    table = format_new_table(file)
     if table.empty:
-        engine.dispose()
         raise SystemExit("Некорректное имя excel файла, либо нет доступа")
-    tname = data['schema']
-    ttable = data['table_site_reports']
 
-    sql_table = "{}.{}".format(tname, ttable)
+    engine = get_engine(data)
+    sql_table = "{}.{}".format(data['schema'], data['table_site_reports'])
     with engine.connect() as conn:
         statement = create_statement(table, sql_table)
         conn.execute(statement)
-        
-    # new.to_sql(name=ttable, schema=tname, con=engine, index=False, if_exists='append')
     print("Добавлены данные из {}".format(sys.argv[1]))
     engine.dispose()
 
